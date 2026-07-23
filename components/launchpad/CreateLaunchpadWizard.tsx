@@ -1809,7 +1809,7 @@ function DeployScreen({ draft, theme, handle }: { draft: Draft; theme: Launchpad
       </div>
       <h2>{name} is ready. Put it live.</h2>
       <p className="lp-success-sub">
-        One click deploys your launchpad to your own Vercel — free hosting, your own domain, you own it fully.
+        This deploys your launchpad to your own Vercel — free hosting, you own it fully.
       </p>
 
       {DEPLOY_READY ? (
@@ -1820,54 +1820,59 @@ function DeployScreen({ draft, theme, handle }: { draft: Draft; theme: Launchpad
             target="_blank"
             rel="noreferrer noopener"
             onClick={() => {
-              // Copy the config on the way out so the paste target on Vercel's form is one box, not a
-              // settings page to hunt for. Fire-and-forget: navigation must not wait on the clipboard.
               void navigator.clipboard?.writeText(envValue).catch(() => {});
             }}
           >
             <VercelMark />
             Deploy to Vercel
           </a>
-          <p className="note lp-deploy-note">Takes about two minutes. No coding.</p>
+          <p className="lp-deploy-how">
+            Opens Vercel and copies your design for you. About two minutes — no coding.
+          </p>
         </>
       ) : (
         <p className="note lp-deploy-note">
-          One-click deploy is switching on shortly. Until then the two steps below take a few minutes and land you in
-          exactly the same place — your launchpad, on your own hosting.
+          Deploy the template to your own Vercel — a few minutes, no coding. Vercel will ask you for the two values below.
         </p>
       )}
 
-      <div className="lp-golive">
-        <div className="lp-golive-step">
-          <span className="lp-golive-n">1</span>
-          <div>
-            <strong>Your configuration</strong>
-            <p className="note">Vercel asks for this during setup — copy it and paste it in.</p>
-            <div className="lp-export-actions">
-              <CopyButton text={envValue} label="Copy configuration" />
-              <DownloadButton filename=".env.local" content={envFile(envValue)} label="Download .env" />
-            </div>
+      {/* The two values Vercel's form asks for, shown UNDER THEIR EXACT NAMES so that when Vercel
+          prompts for "LAUNCHPAD_CONFIG" the operator can look here, see the same name, and hit Copy.
+          Always visible (not folded) — "I couldn't find the config" was the single biggest snag, and
+          the fix is to make the label match the field the operator is staring at on Vercel. */}
+      <div className="lp-vvals">
+        <p className="lp-vvals-head">Vercel asks for these two — here they are</p>
+
+        <div className="lp-vval">
+          <div className="lp-vval-info">
+            <code>LAUNCHPAD_CONFIG</code>
+            <span className="note">Your whole design. Paste this one.</span>
           </div>
+          <CopyButton text={envValue} label="Copy" className="lp-vval-copy" />
         </div>
-        <div className="lp-golive-step">
-          <span className="lp-golive-n">2</span>
-          <div>
-            <strong>A free Pinata key</strong>
-            <p className="note">
-              Stores the coin images people upload. Grab one free at{" "}
+
+        <div className="lp-vval">
+          <div className="lp-vval-info">
+            <code>PINATA_JWT</code>
+            <span className="note">
+              Free key for coin images — get it at{" "}
               <a href="https://pinata.cloud" target="_blank" rel="noreferrer noopener">
                 pinata.cloud
-              </a>{" "}
-              — Vercel asks for it too.
-            </p>
+              </a>
+            </span>
           </div>
         </div>
+
+        <details className="lp-vvals-more">
+          <summary>Prefer a file? Download .env</summary>
+          <DownloadButton filename=".env.local" content={envFile(envValue)} label="Download .env" />
+        </details>
       </div>
 
       <DeployChecklist handle={handle} />
 
       <p className="note lp-success-foot">
-        Prefer your own domain? Deploy first, then add it in your Vercel project and{" "}
+        Want your own domain? Deploy first, then add it in your Vercel project and{" "}
         <a href="/dashboard">point it here</a>.
       </p>
     </div>
