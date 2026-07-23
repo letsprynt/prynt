@@ -1,0 +1,13 @@
+node_modules
+/.next
+/out
+*.tsbuildinfo
+next-env.d.ts
+# Every env variant EXCEPT the committed example. `.env*.local` alone missed a `.env.local.testnet-bak`
+# backup that carried live secrets — this catches any .env* while keeping .env.example tracked.
+.env
+.env.*
+!.env.example
+.vercel
+.DS_Store
+*.log

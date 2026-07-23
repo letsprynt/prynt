@@ -1,0 +1,157 @@
+/* Scoped to this route by CSS Modules on purpose: globals.css is shared with three other
+   workstreams, and nothing here needs to be reachable from outside the stage. The only global
+   class names referenced anywhere in the stage are the REAL app's (.shell, .shell-main,
+   .shell-content) — the whole point is that the preview is the real stylesheet, not a copy. */
+
+/* z-index ladder in globals.css: .bottom-nav 40, .topbar 30, .modal-overlay 100, .toaster 200,
+   marketing sticky CTA 50. The stage sits above the app but below toasts; its own exit bar sits
+   above everything it contains. Because .stage is a positioned element with a z-index it forms a
+   stacking context, so the preview's own position:fixed children (.bottom-nav) cannot escape it. */
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  /* NOT var(--bg): the stage itself is outside the themed wrapper and must stay in the platform's
+     palette, so the exit bar is guaranteed legible against any of the six presets. */
+  background: var(--bg);
+}
+
+/* The themed wrapper. Every draft token lands here, never on :root. */
+.viewport {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  /* A transform makes this element the containing block for its position:fixed descendants. That
+     is load-bearing on mobile: .bottom-nav (globals.css:1147) is fixed to bottom:0, which without
+     this would put the tenant's tab bar underneath the exit bar — the preview would hide the one
+     piece of chrome a phone user is looking at. With it, the nav pins to the bottom of the preview
+     area and the exit bar sits below it. Also isolates the tenant's shadows from the bar. */
+  transform: translateZ(0);
+  isolation: isolate;
+}
+
+/* ---- exit bar: platform-themed, always on top, thumb-reachable on a phone ---- */
+.bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+  background: var(--chrome-bar);
+  backdrop-filter: saturate(180%) blur(20px);
+  order: 2;
+}
+
+@media (min-width: 721px) {
+  .bar {
+    order: 0;
+    border-top: none;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+}
+
+.barLabel {
+  font-size: 12px;
+  color: var(--text-muted);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barLabel strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.exit {
+  flex: 0 0 auto;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 14px;
+  border-radius: 999px;
+}
+
+.kbd {
+  display: none;
+  font-size: 11px;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+
+@media (min-width: 721px) {
+  .kbd { display: inline-block; }
+}
+
+.spacer { margin-left: auto; }
+
+/* ---- states ---- */
+.state {
+  margin: 0 auto;
+  max-width: 620px;
+  padding: 64px 20px;
+  text-align: left;
+}
+
+.state h2 {
+  font-size: 19px;
+  margin-bottom: 8px;
+}
+
+.state p {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.issues {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  font-size: 13px;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.issues code {
+  color: var(--down);
+  font-weight: 600;
+}
+
+.frozen {
+  padding: 8px 16px;
+  font-size: 12.5px;
+  color: var(--text);
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--border);
+  order: 1;
+}
+
+/* ---- the trigger row rendered next to the small ThemePreview panel ---- */
+.triggers {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.triggers button {
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: var(--r-sm);
+}
