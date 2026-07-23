@@ -5,7 +5,7 @@ everyone else. This is the code your launchpad runs on. Deploy it to your own Ve
 
 ## Put it live
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/0xLecrim/prynt-launchpad-template&env=LAUNCHPAD_CONFIG,PINATA_JWT&envDescription=Paste%20the%20configuration%20from%20the%20designer%2C%20plus%20a%20free%20Pinata%20key%20for%20coin%20images.&envLink=https://github.com/0xLecrim/prynt-launchpad-template%23two-values-youll-be-asked-for&project-name=my-launchpad&repository-name=my-launchpad)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/letsprynt/prynt&env=LAUNCHPAD_CONFIG,PINATA_JWT&envDescription=Paste%20the%20configuration%20from%20the%20designer%2C%20plus%20a%20free%20Pinata%20key%20for%20coin%20images.&envLink=https://github.com/letsprynt/prynt%23two-values-youll-be-asked-for&project-name=my-launchpad&repository-name=my-launchpad)
 
 One click. Vercel copies this to your own account, asks for two values, and deploys. No coding, and
 nobody else can touch it or take it down.
